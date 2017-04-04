@@ -2,6 +2,13 @@
 <body>
     <h1>BelajarKod</h1>
     <h3>Ingin belajar kod dalam Bahasa Malaysia? Berikut adalah koleksi tutorial yang telah ditulis oleh jurutera 'software' yang berbakat! Kami mempunyai sebanyak 0 tutorial!</h3>
-
+    <div>
+        {% if guides%}
+        <ul>
+        </ul>
+        {% else %}
+        <h3>Oops! Nampaknya tiada panduan lagi dialam laman web kami! Sila layari balik pada masa hadapan!</h3>
+        {% endif %}
+    </div>
 </body>
 </html>

@@ -21,6 +21,11 @@ def main_page():
     #guides = session.query(Guide).all()
     return render_template('main.html')#,guides=guides)
 
+@app.route('/panduan')
+@app.route('/panduan/semua')
+def all_guides():
+    guides = session,query(Guide).all()
+    return render_template('guide.html', guides=guides)
 
 if __name__ == '__main__':
     app.debug = True
