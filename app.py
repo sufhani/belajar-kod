@@ -17,16 +17,21 @@ session = DBSession()
 
 @app.route('/')
 @app.route('/index')
-def main_page():
+def index():
     #guides = session.query(Guide).all()
     return render_template('main.html')#,guides=guides)
 
 @app.route('/panduan')
 @app.route('/panduan/semua')
 def all_guides():
-    guides = session,query(Guide).all()
+    guides = session.query(Guide).all()
     return render_template('guide.html', guides=guides)
 
+@app.route('/panduan/baru', methods=['GET', 'POST'])
+def new_guide():
+    if request.method == 'POST':
+
+    render_template('newguide.html')
 if __name__ == '__main__':
     app.debug = True
     app.run(host='0.0.0.0', port=5000)
