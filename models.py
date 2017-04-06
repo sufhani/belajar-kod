@@ -11,7 +11,7 @@ class Guide(Base):
 
     id = Column(Integer, Sequence('guide_id_seq'), primary_key=True)
     title = Column(String(130))
-    text = Column(String)
+    body = Column(String)
     timestamp = Column(DateTime)
 
 engine = create_engine('sqlite:///belajarkod.db')

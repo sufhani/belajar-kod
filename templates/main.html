@@ -6,6 +6,12 @@
 <div>
 {% if guides%}
 <ul>
+{% for guide in guides: %}
+    <li>
+        <h4><a href='{{url_for("", guide_id=guide.id) }}'></a>{{guide.title}}</h4>
+        {{ guide.body | markdown }}
+    </li>
+{% endfor %}
 </ul>
 {% else %}
 <h3>Oops! Nampaknya tiada panduan lagi dialam laman web kami! Sila layari balik pada masa hadapan!</h3>

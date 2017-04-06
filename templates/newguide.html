@@ -1,4 +1,15 @@
 {% extends "base.html" %}
-{%block title%}Panduan Baru{% enblock %}
+{%block title%}Panduan Baru{% endblock %}
 {% block content %}
+<h3>Isi panduan anda!</h3>
+<form action="{{ url_for('new_guide')}}" method="post">
+    {{ form.title.label }}:{{ form.title}}
+    <br>
+    {{ form.body.label}}:
+    <br>
+    {{ form.body}}
+    <input type='submit' value='Create'/>
+    <br>
+    {{ form.csrf_token }}
+</form>
 {% endblock %}
