@@ -1,14 +1,12 @@
 {% extends "base.html" %}
-{% block title %} Selamat Datang{% endblock %}
+{% block title %} Panduan {% endblock %}
 {% block content%}
-<h1>BelajarKod</h1>
-<p>Ingin belajar kod dalam Bahasa Malaysia? Berikut adalah koleksi tutorial yang telah ditulis oleh jurutera 'software' yang berbakat! Kami mempunyai sebanyak 0 tutorial!</p>
-<div>
 {% if guides%}
 <ul>
 {% for guide in guides: %}
     <li>
         <a href='{{url_for("show_guide", guide_id=guide.id) }}'>{{guide.title}}</a>
+        {{guide.body | truncate (50) | markdown}}
     </li>
 {% endfor %}
 </ul>

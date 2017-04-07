@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 
 {% block content %}
-
-{%endblock %}
+<h4>{{guide.title}}</h4>
+        {{ guide.body | markdown }}
+{% endblock %}
