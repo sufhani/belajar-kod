@@ -3,4 +3,5 @@
 {% block content %}
 <h4>{{guide.title}}</h4>
         {{ guide.body | markdown }}
+        <a href="{{ url_for('edit_guide', guide_id=guide.id) }}">Tukar</a>
 {% endblock %}

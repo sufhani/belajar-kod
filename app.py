@@ -6,7 +6,7 @@ from flask.ext.markdown import Markdown
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from forms import newGuideForm
+from forms import newGuideForm, editGuideForm
 app = Flask(__name__)
 
 Markdown(app)
@@ -33,15 +33,16 @@ def query_db(query, args=(), one=False):
     cur.close()
     return (rv[0] if rv else None) if one else rv
 
-def insert_db(statement, args=()):
+def crud_db(statement, args=()):
     db = get_db()
     cur = db.execute(statement, args)
     try:
         db.commit()
         print('Successul!')
-    except:
+    except Exception as e:
         db.rollback()
-        print('Failed!')
+        print('e')
+        print('Failed')
     finally:
         db.close()
 
@@ -62,7 +63,7 @@ def index():
     #guides = session.query(Guide).all()
     return render_template('main.html', guides=guides)
 
-@app.route('/panduan')
+@app.route('/panduan/')
 @app.route('/panduan/semua')
 def all_guides():
     guides = query_db('SELECT * FROM guides LIMIT 5')
@@ -76,7 +77,7 @@ def new_guide():
         title = form.title.data
         body = form.body.data
         timestamp = datetime.utcnow()
-        insert_db("INSERT INTO guides (title, body, timestamp) "
+        crud_db("INSERT INTO guides (title, body, timestamp) "
             "VALUES (?, ?, ?)", (title, body, timestamp))
 
         return redirect(url_for('index'))
@@ -86,13 +87,33 @@ def new_guide():
 @app.route('/panduan/<int:guide_id>')
 def show_guide(guide_id):
     id = (guide_id,)
-    guide = query_db('SELECT * FROM guides WHERE id=?', id,one=True)
+    guide = query_db('SELECT * FROM guides WHERE id=?', id, one=True)
     if guide == None:
-        return redirect(urlf_for('index'))
+        return redirect(url_for('index'))
     return render_template('guide.html', guide=guide)
+
+
 @app.errorhandler(404)
 def not_found_error(error):
     return render_template('404.html'), 404
+
+
+@app.route('/panduan/<int:guide_id>/edit', methods=['GET', 'POST'])
+def edit_guide(guide_id):
+    id = (guide_id,)
+    guide = query_db('SELECT * FROM guides WHERE id=?', id, one=True)
+    if guide == None:
+        return redirect(url_for('index'))
+    form = editGuideForm()
+    if form.validate_on_submit():
+        title = form.title.data
+        body = form.body.data
+        timestamp = datetime.utcnow()
+        crud_db('UPDATE guides SET title=?, body=?, timestamp=? WHERE id=?', (title, body, timestamp, guide_id))
+        return redirect(url_for('index'))
+    form.body.data = guide['body']
+    form.title.data = guide['title']
+    return render_template('editguide.html',guide=guide, form=form)
 
 
 if __name__ == '__main__':
